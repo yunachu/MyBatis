@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace ="com.my.myboard">
+	<resultMap type="com.my.vo.MyBoardVo" id="MyBoardMap">
+		<result property="myno" column ="MYNO"/>
+		<result property="myname" column="MYNAME"/>
+		<result property="mytitle" column="MYTITLE"/>
+		<result property="mycontent" column="MYCONTENT"/>
+		<result property="mydate" column="MYDATE"/>	
+	</resultMap>
+	<select id="selectAll" resultMap="MyBoardMap">
+		SELECT *
+		FROM MYBOARD
+		ORDER BY MYNO DESC	
+	</select>
+		<select id="selectOne" parameterType ="int" resultType="MyBoardVo"><!-- parameterType : 매개변수 myno가 int 라는 것 설정 -->
+		SELECT *
+		FROM MYBOARD
+		WHERE MYNO = #{myno}	
+	</select>
+	<insert id="myinsert" parameterType ="MyBoardVo">
+		INSERT INTO MYBOARD 
+		VALUES(MYSEQ.NEXTVAL, #{myname}, #{mytitle}, #{mycontent}, SYSDATE)
+	</insert>
+	<delete id="mydelete" parameterType ="int">
+		DELETE FROM MYBOARD 
+		WHERE MYNO= #{myno}
+	</delete>
+	<update id="myupdate" parameterType ="MyBoardVo">
+		UPDATE MYBOARD
+		SET MYTITLE =#{mytitle}, MYCONTENT = #{mycontent} 
+		WHERE MYNO=#{myno}
+	</update>
+</mapper>  
