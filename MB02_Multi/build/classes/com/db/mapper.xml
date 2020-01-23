@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="multi"><!--다오에서 보내줄 때만 이거랑 일치시켜주면 된다-->
+	<resultMap type="com.vo.MDBoardVo" id="mdmap">
+		<result property="seq" column="SEQ"/>
+		<result property="writer" column="WRITER"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="regdate" column="REGDATE"/>	
+	</resultMap>
+	
+	<select id="selectAll" resultType="MDBoardVo">
+		SELECT *
+		FROM MDBOARD
+		ORDER BY SEQ DESC
+	</select>
+	<select id="selectOne" parameterType ="int" resultType="MDBoardVo" >
+		SELECT * 
+		FROM MDBOARD
+		WHERE SEQ = #{seq}
+	</select>
+	<insert id="insert" parameterType ="MDBoardVo" >
+		INSERT INTO MDBOARD
+		VALUES(MDBOARDSEQ.NEXTVAL, #{writer}, #{title}, #{content}, SYSDATE)
+	</insert>
+	<update id="update" parameterType = "MDBoardVo">
+		UPDATE MDBOARD
+		SET TITLE = #{title}, CONTENT= #{content}
+		<where>
+			<if test="seq !=null">
+				SEQ= #{seq}
+			</if>
+			<!--<if test="writer != null">
+				AND WRITER = #{writer}// 이렇게 if문 조건 여러개 사용 가능
+			</if>-->		
+		</where>
+		<!-- WHERE SEQ= #{seq} -->
+		
+	</update>
+	<delete id="delete" parameterType ="int">
+		DELETE FROM MDBOARD 
+		WHERE SEQ= #{seq}
+	</delete>
+	<delete id="muldel" parameterType ="map">
+		DELETE FROM MDBOARD 
+		WHERE SEQ IN 
+		<foreach collection="seq" item = "seq" open="(" separator="," close=")">
+			#{seq}
+		</foreach>
+	</delete>
+
+</mapper> 
