@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>    
-<% response.setContentType("text/html; charset=UTF-8"); %>    
+<% response.setContentType("text/html; charset=UTF-8"); %>   
+
 <%@ page import ="com.vo.MDBoardVo" %>
-<%@ page import ="com.dao.MDBoardDao" %>
+<%@ page import="com.dao.MDBoardDao"%>
 <%@ page import ="java.util.List" %>
+<%	
+	MDBoardDao dao = new MDBoardDao();
+	List<MDBoardVo> list = dao.selectAll();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,10 +27,6 @@
 </script>
 </head>
 <body>
-<%
-	MDBoardDao dao = new MDBoardDao();
-	List<MDBoardVo> list = dao.selectAll();
-%>
 <h1>글목록</h1>
 <form action="board?command=muldel" method="post" id="muldelform">
 	<table border="1">
@@ -69,5 +70,6 @@
 	</tr>		
 	</table>
 </form>
+
 </body>
 </html>
